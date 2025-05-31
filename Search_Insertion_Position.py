@@ -5,6 +5,7 @@ Created on Sat May 31 09:48:41 2025
 @author: jwang
 """
 
+#here we assume that the given list is already sorted
 def searchInsert(nums, target):
     """
     :type nums: List[int]
@@ -14,19 +15,16 @@ def searchInsert(nums, target):
     low = 0
     high = len(nums) - 1
 
-    while(high >= 0):
-        if nums[low] == target:
-            return low
-        elif nums[high] == target:
-            return high
-        if nums[low] > target:
-            return low
+    while (low <= high):
+        mid = (low + high) // 2
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] > target:
+            high = mid - 1
+        else:
+            low = mid + 1
         
-        low += 1
-        high -= 1
-        
-        
-    return len(nums)
+    return low
 
 nums = [1,3,5,6]
 target = 5
