@@ -19,36 +19,29 @@ def reverseVowels(s):
     :type s: str
     :rtype: str
     """
+    char_s = list(s)    
 
-    resulting_chars = []
-    vowel_indices = []
-    theVowels = []
+    low = 0
+    high = len(s) - 1
+    while(low < high):
+        if isVowel(s[low]) == False:
+            low += 1
+            continue
+        if isVowel(s[high]) == False:
+            high -= 1
+            continue
 
-    for i in range(len(s)):
-        if isVowel(s[i]):
-            vowel_indices.append(i)
-            theVowels.append(s[i])
-            resulting_chars.append(' ')
-        else:
-            resulting_chars.append(s[i])
-    left = 0
-    right = len(vowel_indices) - 1
+        temp = s[low]
+        char_s[low] = char_s[high]
+        char_s[high] = temp
 
-    while (left < right):
-        temp = vowel_indices[left]
-        vowel_indices[left] = vowel_indices[right]
-        vowel_indices[right] = temp
-
-        left += 1
-        right -= 1
-    for i in range(len(vowel_indices)):
-        resulting_chars[vowel_indices[i]] = theVowels[i]
-    
-    final_string = ""
-    for ch in resulting_chars:
-        final_string += ch
-    
-    return final_string
+        low += 1
+        high -= 1
+        
+    result = ""
+    for ch in char_s:
+        result += ch
+    return result
 
 print(reverseVowels("IceCreAm"))
 print(reverseVowels("leetcode"))
