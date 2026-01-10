@@ -26,43 +26,44 @@ def isAlienSorted(words, order):
     :type order: str
     :rtype: bool
     """
-    alien_order = dict()
+    if len(words) == 1:
+        return True
     
-    for i in range(len(order)):
-        alien_order[order[i]] = i + 1   #index represents the order of the alphabet in the alien dictionary
-
-    shortest_comp = ""
-    for w in range(1, len(words)):
-        if words[w] == words[w - 1]:
+    alien_dict = dict()
+    for o in range(len(order)):
+        alien_dict[order[o]] = o + 1
+    
+    for i in range(1, len(words)):
+        if words[i] == words[i - 1]:
             continue
-        flag = False
-        if len(words[w]) <= len(words[w - 1]):
-            shortest_comp = words[w]
-        else:
-            shortest_comp = words[w - 1]
         
-        if shortest_comp == words[w - 1]:
-            for ch in range(len(shortest_comp)):
-                if alien_order[ shortest_comp[ch] ] < alien_order[ (words[w])[ch] ]:
-                    flag = True
-                elif alien_order[ shortest_comp[ch] ] > alien_order[ (words[w])[ch] ]:
-                    if not flag:
-                        return False 
-                else:
-                    if ch == len(shortest_comp) - 1:
-                        continue
+        shortest_word = ""                
+        if len(words[i]) < len(words[i - 1]):
+            shortest_word = words[i]
         else:
-            for ch in range(len(shortest_comp)):
-                if alien_order[ shortest_comp[ch] ] > alien_order[ (words[w - 1])[ch] ]:
-                    flag = True
-                elif alien_order[ shortest_comp[ch] ] < alien_order[ (words[w - 1])[ch] ]:
-                    if not flag:
-                        return False 
-                else:
-                    if ch == len(shortest_comp) - 1:
-                        return False                
+            shortest_word = words[i - 1]
 
+        if shortest_word == words[i]:
+            for ch in range(len(shortest_word)):
+                if alien_dict[shortest_word[ch]] < alien_dict[(words[i - 1])[ch] ]:
+                    return False
+                elif alien_dict[shortest_word[ch]] > alien_dict[(words[i - 1])[ch] ]:   #the first moment we encountered that words[i - 1] and words[i] is sorted
+                    break
+                else:
+                    if ch == len(shortest_word) - 1:
+                        return False    #any character (except the blank character) is greater than a blank character
+        else:
+            for ch in range(len(shortest_word)):
+                if alien_dict[shortest_word[ch]] > alien_dict[(words[i])[ch] ]: #from alien language, words[i - 1] is lexicographically greater than words[i]
+                    return False
+                elif alien_dict[shortest_word[ch]] < alien_dict[(words[i])[ch] ]:   #words[i - 1] and words[i] is sorted
+                    break
+                else:
+                    if ch == len(shortest_word) - 1:   #words[i - 1] and words[i] is sorted as any character (except the blank character) is greater than a blank character
+                        break
+    
     return True
+
 
 words = ["hello","leetcode"]
 order = "hlabcdefgijkmnopqrstuvwxyz"
@@ -87,3 +88,11 @@ print("Is", words5, "alien sorted given order", order5, "?", isAlienSorted(words
 words6 = ["app","apple"]
 order6 = "abcdefghijklmnopqrstuvwxyz"
 print("Is", words6, "alien sorted given order", order6, "?", isAlienSorted(words6, order6)) #True
+
+words7 = ["ab","aa","ac"]
+order7 = "abcdefghijklmnopqrstuvwxyz"
+print("Is", words7, "alien sorted given order", order7, "?", isAlienSorted(words7, order7)) #False
+
+words8 = ["kruw","ha","q"]
+order8 = "zgxlkthsjuoqcpavbfdermiywn"
+print("Is", words8, "alien sorted given order", order8, "?", isAlienSorted(words8, order8)) #True
