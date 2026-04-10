@@ -1,4 +1,8 @@
 """
+Created on Fri Apr 10 2026
+
+@author: jwang
+
 Problem Description:
     We are given an array asteroids of integers representing asteroids in a row. 
     The indices of the asteroid in the array represent their relative position in space.
@@ -22,39 +26,34 @@ def asteroidCollision(asteroids):
     :type asteroids: List[int]
     :rtype: List[int]
     """
-    theStack = []
+    theStack = [asteroids[0]]
 
-    for a in range(len(asteroids)):
-        while len(theStack) > 0:
-            if theStack[-1] < 0 and asteroids[a] < 0:
-                break
-            if theStack[-1] > 0 and asteroids[a] > 0:
-                break
-
-            collision = theStack[-1] + asteroids[a]
-            if collision == 0:
-                if theStack[-1] > 0 and asteroids[a] < 0:
-                    asteroids[a] = 0
+    for i in range(1, len(asteroids)):
+        if len(theStack) == 0:
+            theStack.append(asteroids[i])
+            continue
+            
+        if (theStack[-1] > 0 and asteroids[i] > 0) or (theStack[-1] < 0 and asteroids[i] < 0):
+            theStack.append(asteroids[i])
+        elif theStack[-1] < 0 and asteroids[i] > 0: #asteroids are opposite in directions but diverging 
+            theStack.append(asteroids[i])
+        elif theStack[-1] + asteroids[i] == 0:  #equal in size but opposite in direction, both asteroids cancel/negate each other.  They cannot diverge as checked in the previous condition
+            theStack.pop()
+        elif theStack[-1] > 0 and asteroids[i] < 0: #converging in opposing directions
+            flag = True
+            while len(theStack) > 0 and theStack[-1] > 0:
+                if abs(asteroids[i]) < abs(theStack[-1]):
+                    flag = False
+                    break   #that current asteroids explodes as its size is smaller
+                elif abs(asteroids[i]) == abs(theStack[-1]):    #both asteroids that collided will explode
                     theStack.pop()
-                break
-            elif collision > 0:
-                if theStack[-1] < 0 and asteroids[a] > 0:   #divergence
+                    flag = False
                     break
-                if asteroids[a] < 0:
-                    asteroids[a] = 0
-                elif theStack[-1] < 0:
-                    theStack.pop()
-                break
-            else:
-                if theStack[-1] < 0 and asteroids[a] > 0:   #divergence
-                    break
-                if theStack[-1] > 0:
-                    theStack.pop()
                 else:
-                    asteroids[a] = 0
-                    break
-        if asteroids[a] != 0:
-            theStack.append(asteroids[a])
+                    theStack.pop()
+            
+            if flag == True:    #the current asteroids did not explode
+                theStack.append(asteroids[i])
     return theStack
 
 asteroids = [5,10,-5]
@@ -66,7 +65,6 @@ print("The state of the asteroids after all collisions is:", asteroidCollision(a
 asteroids3 = [10,2,-5]
 print("The state of the asteroids after all collisions is:", asteroidCollision(asteroids3))  #[10] The 2 and -5 collide resulting in -5. The 10 and -5 collide resulting in 10.
 
-
 asteroids4 = [3, 5, -6, 2, -1, 4]
 #The asteroid -6 makes the asteroid 3 and 5 explode, and then continues going left. On the other side, the asteroid 2 makes the asteroid -1 explode and then continues going right, without reaching asteroid 4.
 print("The state of the asteroids after all collisions is:", asteroidCollision(asteroids4))  #[-6,2,4] 
@@ -76,3 +74,21 @@ print("The state of the asteroids after all collisions is:", asteroidCollision(a
 
 asteroids6 = [-2,-2,-1,2]
 print("The state of the asteroids after all collisions is:", asteroidCollision(asteroids6))  #[-2,-2,-1,2]
+
+asteroids7 = [1,-1,-2,-2]
+print("The state of the asteroids after all collisions is:", asteroidCollision(asteroids7))  #[-2,-2]
+
+asteroids8 = [-2,-2,1,-1]
+print("The state of the asteroids after all collisions is:", asteroidCollision(asteroids8))  #[-2,-2]
+
+asteroids9 = [13, 17, -5, -10, 8, -8, 15, -20]
+print("The state of the asteroids after all collisions is:", asteroidCollision(asteroids9))  #[-20]
+
+asteroids10 = [-10, -5, -4, 2, 5, 6]
+print("The state of the asteroids after all collisions is:", asteroidCollision(asteroids10))  #[-10, -5, -4, 2, 5, 6]
+
+asteroids11 = [1, 2, 3, 4, 5]
+print("The state of the asteroids after all collisions is:", asteroidCollision(asteroids11))  #[1, 2, 3, 4, 5]
+
+asteroids12 = [1, 3, 5, -6, -9]
+print("The state of the asteroids after all collisions is:", asteroidCollision(asteroids12))  #[-6, -9] 
