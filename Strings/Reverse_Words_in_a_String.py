@@ -10,13 +10,11 @@ def reverseWords(s):
     :type s: str
     :rtype: str
     """
-    s_words = s.split(" ")
-    i = 0
-    while(i < len(s_words)):    #remove leading and trailing whitesapces in a string
-        if s_words[i] == '':
-            s_words.pop(i)
-        else:
-            i += 1
+    store_words = s.split(" ")
+    s_words = []
+    for word in store_words:
+        if word != '':
+            s_words.append(word)
     
     left = 0
     right = len(s_words) - 1
@@ -35,7 +33,7 @@ def reverseWords(s):
             result = result + s_words[i] + " "
         else:
             result += s_words[i]
-    return result   
+    return result  
 
 print(reverseWords("the sky is blue"))
 print(reverseWords("  hello world  "))
