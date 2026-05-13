@@ -39,10 +39,10 @@ def numPrimeArrangements(n):
     return ( factorial(count_primes) * factorial(non_primes) ) % (pow(10, 9) + 7)
 
 n = 5
-print(numPrimeArrangements(n)) # 12.0
+print(numPrimeArrangements(n)) # 12
 
 n2 = 100
-print(numPrimeArrangements(n2)) # 682289015.0
+print(numPrimeArrangements(n2)) # 682289015
 
 n3 = 1
-print(numPrimeArrangements(n3)) # 1.0
+print(numPrimeArrangements(n3)) # 1
