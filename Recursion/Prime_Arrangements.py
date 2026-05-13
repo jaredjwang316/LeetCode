@@ -8,7 +8,7 @@ Problem Description:
 Constraints:
     - 1 <= n <= 100
 """
-from math import sqrt, pow
+from math import sqrt
 
 def factorial(n):
     if n == 0 or n == 1:
