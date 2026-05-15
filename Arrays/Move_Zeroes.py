@@ -15,15 +15,14 @@ def moveZeroes(nums):
     :type nums: List[int]
     :rtype: None Do not return anything, modify nums in-place instead.
     """
-    i = 0
-    count_iterations = 0
-    while(count_iterations < len(nums)):
-        if nums[i] == 0:
-            del nums[i]
-            nums.append(0)
-        else:
-            i = i + 1
-        count_iterations += 1
+    index = 0
+    for i in range(len(nums)):
+        if nums[i] != 0:
+            nums[index] = nums[i]
+            index += 1
+    
+    for i in range(index, len(nums)):
+        nums[i] = 0
 
 nums = [0,1,0,3,12]
 print("nums before moving zeroes:", nums)
