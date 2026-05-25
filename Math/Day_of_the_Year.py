@@ -45,3 +45,6 @@ print(dayOfYear(date4)) #Output: 2
 date5 = "1900-05-02"
 print(dayOfYear(date5)) #Output: 122
 
+date6 = "2003-03-01"
+print(dayOfYear(date6)) #Output: 60
+
