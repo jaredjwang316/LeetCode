@@ -23,26 +23,24 @@ def diStringMatch(s):
     :type s: str
     :rtype: List[int]
     """
-    
-    perm = []
-    for i in range(len(s) + 1):
-        perm.append(0)
-    
     low = 0
     high = len(s)
-    for ch in range(len(s)):
-        if s[ch] == 'I':
-            perm[ch] = low
+    perm_result = []
+
+    for ch in s:
+        if ch == 'I':
+            perm_result.append(low)
             low += 1
         else:
-            perm[ch] = high
+            perm_result.append(high)
             high -= 1
-
-    for i in range(len(s) + 1):
-        if i not in perm:
-            perm[len(perm) - 1] = i
-            break
-    return perm
+    
+    if s[-1] == 'I':
+        perm_result.append(low)
+    else:
+        perm_result.append(high)
+        
+    return perm_result
 
 s = "IDID"
 print(diStringMatch(s))
