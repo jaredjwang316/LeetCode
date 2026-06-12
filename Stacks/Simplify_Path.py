@@ -37,31 +37,25 @@ def simplifyPath(path):
     :type path: str
     :rtype: str
     """
-    path_sectors = path.split('/')
-    i = 0
-    while(i < len(path_sectors)):
-        if path_sectors[i] == '':
-            path_sectors.remove('')
-        else:
-            i += 1
-    
-    simplified_path = "/"
-    theStack = []
-    for j in range(len(path_sectors)):
-        if path_sectors[j] == '.':  #current directory
-            continue
-        elif path_sectors[j] == '..':   #parent_directory
-            if len(theStack) > 0:
-                theStack.pop()  #go up a directory
-        else:
-            theStack.append(path_sectors[j])
-    
-    for j in range(len(theStack)):
-        if j != len(theStack) - 1:
-            simplified_path = simplified_path + theStack[j] + '/'
-        else:   #path cannot end with a slash unless it is the root directory
-            simplified_path = simplified_path + theStack[j]
+    directories = path.split("/")
+    filtered_directories = []
 
+    for directory in directories:
+        if directory == ".":    #current directory
+            continue
+        elif directory == "..":
+            if len(filtered_directories) > 0:
+                filtered_directories.pop()
+        elif directory != "":
+            filtered_directories.append(directory)
+    
+    simplified_path = ""
+    for directory in filtered_directories:
+        simplified_path += "/"
+        simplified_path += directory
+    
+    if simplified_path == "":
+        return "/"  #path must start with a single slash
     return simplified_path
 
 path = "/home/"
