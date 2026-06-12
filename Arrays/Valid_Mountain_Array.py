@@ -20,21 +20,31 @@ def validMountainArray(arr):
     if len(arr) < 3:
         return False
     
-    stopIncreasing = False
-    for i in range(1, len(arr)):
-        if arr[i] == arr[i - 1]:
-            return False
-        elif arr[i] < arr[i - 1]:
-            if i < 2:
-                return False
-            stopIncreasing = True
-        else:
-            if stopIncreasing == True:
-                return False
-    
-    if stopIncreasing == False: #if decreasing never happened in the list
+    isIncreasing = False
+    isDecreasing = False
+
+    if arr[1] > arr[0]:
+        isIncreasing = True
+    elif arr[1] < arr[0]:
+        isDecreasing = True
+    else:
         return False
-    return True
+
+    for i in range(2, len(arr), 1):
+        if arr[i] > arr[i - 1]: #mountains first strictly increase, then strictly decrease
+            if isDecreasing == True:    #check if decreased beforehand
+                return False
+            isIncreasing = True #indicate an increase happened 
+        elif arr[i] < arr[i - 1]:
+            if isIncreasing == False:   #if there was no increase beforehand, this array is not a mountain based on the definition of a mountain
+                return False
+            isDecreasing = True #indicate a decrease happened 
+        else:
+            return False
+
+    if isDecreasing == False:
+        return False
+    return True     
 
 arr = [2,1]
 print(validMountainArray(arr))  #False
